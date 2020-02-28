@@ -1,0 +1,166 @@
+﻿@model IndexModel
+
+@{
+    ViewData["Title"] = "IPv4";
+}
+
+    <div class="modal-footer">
+        <fieldset class="w-100">
+            <a class="nav-tabs" btn btn-primary href="/amk/fi">
+                <img src="https://portal.savonia.fi/amk/sites/default/files/savonialogo_0_1.png" alt="" />
+            </a>
+            <a class="anchorGet btn btn-secondary text-white float-right">New IPv4</a>
+            <a class="anchorGet btn btn-secondary text-white float-right">New IP6</a>
+        </fieldset>
+    </div>
+
+
+<div class="col-sm-12 col-md-12 col-lg-12 mb-5">
+    <h5> IP Search: </h5>
+    <form asp-action="Index" method="post">
+        <div class="form-actions">
+            <div class="form-group">
+                <input id="ipSearchInput" class="form-control col-sm-6 mb-2" type="text" name="IPFilter" value="@Model.IPFilter" placeholder="IP Address" />
+                <input id="userSearchInput" class="form-control col-sm-6" type="text" name="UserFilter" value="@Model.UserFilter" placeholder="User" />
+            </div>
+            <input type="submit" value="Search" class="btn btn-secondary"/>
+            <a asp-action="Index" class="btn btn-secondary ml-1">Show all</a>
+        </div>
+    </form>
+</div>
+<div>
+        <table id="ipv4Table" class="table table-responsive-sm table-responsive-md table-responsive-lg table-striped mt-5">
+            <thead>
+                <tr class="thead-dark">
+                    <th><button type="submit" class="btn button-primary text-white" style="text-align:left; padding-left:0px">IPADDRESS</button></th>
+                    <th><button type="submit" name="sortOrder" value="@Model.DateSortParm1" style="text-align:left; padding-left:0px" class="btn button-primary text-white">FROM</button></th>
+                    <th><button type="submit" name="sortOrder" value="@Model.DateSortParm2" style="text-align:left; padding-left:0px" class="btn button-primary text-white">TO</button></th>
+                    <th><button type="submit" name="sortOrder" value="@Model.UserSortParm" style="text-align:left; padding-left:0px" class="btn button-primary text-white">USER</button></th>
+                    <th><button type="submit" class="btn button-primary text-white" style="text-align:left; padding-left:0px">EDIT</button></th>
+                    <th><button type="submit" class="btn button-primary text-white" style="text-align:left; padding-left:0px">DETAILS</button></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Ipaddresses)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IPAddessSegment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AFrom)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ATo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserEmail)
+                        </td>
+                        <td>
+                            <a class="anchorEdit btn btn-image"  data-id="@item.Id"></a>
+                        </td>
+                        <td>
+                            <a class="anchorDetails btn btn-image" data-id="@item.Id"></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+</div>
+
+<div id="editModal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="editModalContent"></div>
+        </div>
+    </div>
+</div>
+
+<div id="detailsModal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="detailsModalContent"></div>
+        </div>
+    </div>
+</div>
+
+<div id="getModal" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="getModalContent"></div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(() => {
+            // Edit IPv4 Modal
+            $(".anchorEdit").click(function () {
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr("data-id");
+                $.ajax({
+                    type: "GET",
+                    url: "/IPv4/Edit",
+                    contentType: "application/json; charset=utf-8",
+                    data: { "SeqId": id },
+                    datatype: "json",
+                    success: function (data) {
+                        $("#editModalContent").html(data);
+                        $("#editModal").modal("show");
+
+                    },
+                    error: function () {
+                        alert("Load failed.");
+                    }
+                });
+            });
+
+            $(".anchorDetails").click(function () {
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr("data-id");
+                $.ajax({
+                    type: "GET",
+                    url: "/IPv4/Details/" + id,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "SeqId": id },
+                    datatype: "json",
+                    success: function (data) {
+                        $("#detailsModalContent").html(data);
+                        $("#detailsModal").modal("show");
+
+                    },
+                    error: function () {
+                        alert("Load failed.");
+                    }
+                });
+            });
+
+            // Get IPv4 Modal
+            $(".anchorGet").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/IPv4/GetIPv4",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $("#getModalContent").html(data);
+                        $("#getModal").modal("show");
+
+                    },
+                    error: function () {
+                        alert("Load failed.");
+                    }
+                });
+            });
+
+            // Reload page after leaving modal
+            $('#editModal').on('hidden.bs.modal', function () {
+                location.reload();
+            });
+            $('#getModal').on('hidden.bs.modal', function () {
+                location.reload();
+            });
+        });
+    </script>
+}  

@@ -1,0 +1,41 @@
+﻿@model IPv4Addresses
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <div class="modal-body">
+        <h1>Details</h1>
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(modelItem => Model.AFrom)
+            </dt>
+            <dh class="col-sm-10">
+                @Html.DisplayFor(modelItem => Model.AFrom)
+            </dh>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(modelItem => Model.ATo)
+            </dt>
+            <dh class="col-sm-10">
+                @Html.DisplayFor(modelItem => Model.ATo)
+            </dh>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(modelItem => Model.UserEmail)
+            </dt>
+            <dh class="col-sm-10">
+                @Html.DisplayFor(modelItem => Model.UserEmail)
+            </dh>
+
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(modelItem => Model.Notes)
+            </dt>
+            <dh class="col-sm-10">
+                @Html.DisplayFor(modelItem => Model.Notes)
+            </dh>
+        </dl>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>

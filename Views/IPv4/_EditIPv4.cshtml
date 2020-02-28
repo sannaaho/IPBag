@@ -1,0 +1,35 @@
+﻿@model IPv4Addresses
+
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <div class="modal-body">
+        <form asp-action="EditPost">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="Id" type="hidden" class="form-control" value="@Model.Id" />
+                <input asp-for="SeqId" type="hidden" class="form-control" value="@Model.SeqId" />
+                <input asp-for="UserEmail" type="hidden" class="form-control" value="@Model.UserEmail" />
+                <input asp-for="IpaddressSeqment" type="hidden" class="form-control" value="@Model.IpaddressSeqment" />
+                <input asp-for="AFrom" type="hidden" class="form-control" value="@Model.AFrom" />
+            </div>
+            <div class="form-group">
+                <label asp-for="ATo" class="control-label">To</label>
+                <input asp-for="ATo" type="date" class="form-control" placeholder="@Model.ATo" value="@Model.ATo" />
+                <span asp-validation-for="ATo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Notes" class="control-label"></label>
+                <input asp-for="Notes" type="text" class="form-control" value="@Model.Notes" />
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" />
+            </div>
+        </form>     
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+</div>
